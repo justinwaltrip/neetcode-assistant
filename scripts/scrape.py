@@ -4,6 +4,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from pathlib import Path
 import json
+from tqdm import tqdm
 
 BASE_URL = "https://neetcode.io/practice"
 DATA_PATH = Path("data/raw/problems.json")
@@ -34,8 +35,10 @@ table = driver.find_element(
 # get all rows
 rows = table.find_elements(By.TAG_NAME, "tr")
 
+problem_rows = rows[1:]
+
 problems = {}
-for row in rows:
+for row in tqdm(problem_rows):
     # get problem name
     name = row.find_element(By.TAG_NAME, "a").text
 

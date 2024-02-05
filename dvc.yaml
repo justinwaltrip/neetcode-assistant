@@ -1,0 +1,5 @@
+stages:
+  scrape:
+    cmd: python scripts/scrape.py
+    outs:
+      - data/raw/problems.json
