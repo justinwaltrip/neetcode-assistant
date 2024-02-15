@@ -37,14 +37,40 @@ rows = table.find_elements(By.TAG_NAME, "tr")
 
 problem_rows = rows[1:]
 
-problems = {}
+problems = []
 for row in tqdm(problem_rows):
-    # get problem name
-    name = row.find_element(By.TAG_NAME, "a").text
+    # get problem name 
+    problem_col = row.find_element(By.TAG_NAME, "a")
+    name = problem_col.text
+
+    # skip if problem already exists
+    if any(problem["name"] == name for problem in problems):
+        continue
+
+    # get problem page link
+    page_link = problem_col.get_attribute("href")
+
+    # go to problem page
+    driver.get(page_link)
+
+    # configure local storage
+    driver.execute_script(
+        "window.localStorage.setItem('dynamicIdeLayoutGuide', 'true');"
+    )
+
+    # wait for page to load
+    driver.implicitly_wait(5)
+
+    # get description
+    description = driver.find_element(
+        By.XPATH, "/html/body/div[1]/div[2]/div/div/div[4]/div/div/div[4]/div/div[1]/div[3]"
+    ).text
+
+    # go back to problems list
+    driver.back()
 
     # get problem difficulty
-    diff_col = row.find_element(By.CLASS_NAME, "diff-col")
-    difficulty = diff_col.text
+    difficulty = row.find_element(By.CLASS_NAME, "diff-col").text
 
     # click on video solution
     video_solution_col = row.find_element(By.XPATH, "td[5]")
@@ -64,16 +90,37 @@ for row in tqdm(problem_rows):
     )
     close_button.click()
 
+    # click on code solution
+    code_solution_col = row.find_element(By.XPATH, "td[6]")
+    button = code_solution_col.find_element(By.TAG_NAME, "button")
+    button.click()
+
+    # get solution
+    solution = driver.find_element(
+        By.XPATH,
+        "/html/body/app-root/app-pattern-table-list/div/div[2]/div[6]/app-table/app-modal[1]/div/div[2]/section/app-code/div/div/pre/code",
+    ).text
+
+    # close code solution modal
+    close_button = driver.find_element(
+        By.XPATH,
+        "/html/body/app-root/app-pattern-table-list/div/div[2]/div[6]/app-table[1]/app-modal[1]/div/div[2]/footer/button",
+    )
+    close_button.click()
+
     problems.append(
         {
             "name": name,
+            "page_link": page_link,
+            "description": description,
             "difficulty": difficulty,
             "video_link": video_link,
+            "solution": solution,
         }
     )
 
-# save problems to file
-with open(DATA_PATH, "w") as f:
-    json.dump(problems, f, indent=4)
+    # save problems to file after each problem
+    with open(DATA_PATH, "w") as f:
+        json.dump(problems, f, indent=4)
 
 driver.quit()
