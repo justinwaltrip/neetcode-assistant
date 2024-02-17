@@ -27,3 +27,7 @@ bash install.sh
 ```bash
 aws configure
 ```
+
+## Stages
+
+- **scrape** - Scrape NeetCode 150 problems from their website.

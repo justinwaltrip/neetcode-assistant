@@ -79,6 +79,10 @@ for row in tqdm(problem_rows):
             "/html/body/div[1]/div[2]/div/div/div[4]/div/div/div[4]/div/div[1]/div[3]",
         ).text
 
+    # if description is empty, skip problem
+    if not description:
+        continue
+
     # go back to problems list
     driver.back()
 
@@ -96,10 +100,17 @@ for row in tqdm(problem_rows):
         button.click()
 
     # get video solution link
-    video_link = driver.find_element(
-        By.XPATH,
-        "/html/body/app-root/app-pattern-table-list/div/div[2]/div[6]/app-table/app-modal[2]/div/div[2]/header/h1/a",
-    ).get_attribute("href")
+    for i in range(1, 20):
+        video_link = driver.find_element(
+            By.XPATH,
+            (
+                f"/html/body/app-root/app-pattern-table-list/div/div[2]/div[6]/app-table[{i}]/app-modal[2]/div/div[2]/header/h1/a"
+                if i > 1
+                else "/html/body/app-root/app-pattern-table-list/div/div[2]/div[6]/app-table/app-modal[2]/div/div[2]/header/h1/a"
+            ),
+        ).get_attribute("href")
+        if video_link != "https://www.youtube.com/watch?v=":
+            break
 
     # close video solution modal
     for i in range(2, 20):
