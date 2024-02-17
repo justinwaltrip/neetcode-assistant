@@ -13,11 +13,21 @@ The project is structured as follows:
 
 Pre-conditions:
 - Python 3.11 or later with pip and virtualenv installed.
+- AWS CLI installed and configured.
+- youtube-dl installed.
 
 Use the install script to install the required dependencies.
 
 ```bash
 bash install.sh
+```
+
+### Nix
+
+If you are using Nix, you can enter a shell with the required dependencies by running the following command:
+
+```bash
+nix-shell -p python3 awscli youtube-dl
 ```
 
 ## Setup
@@ -31,3 +41,4 @@ aws configure
 ## Stages
 
 - **scrape** - Scrape NeetCode 150 problems from their website.
+- **download** - Transcripts for Youtube solutions to the problems.
