@@ -7,3 +7,16 @@ stages:
       hash: md5
       md5: eafce5e82fe2f3adc583aeec95041572
       size: 247380
+  download:
+    cmd: python scripts/download.py
+    deps:
+    - path: data/raw/problems.json
+      hash: md5
+      md5: eafce5e82fe2f3adc583aeec95041572
+      size: 247380
+    outs:
+    - path: data/raw/transcripts
+      hash: md5
+      md5: 8dbb2b420d0928fccaf4ad8496a7cd09.dir
+      size: 18133314
+      nfiles: 136

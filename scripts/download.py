@@ -13,7 +13,7 @@ from pathlib import Path
 from yt_dlp import YoutubeDL
 
 
-PROBLEMS_PATH = "data/problems.json"
+PROBLEMS_PATH = "data/raw/problems.json"
 OUT_DIR = Path("data/raw/transcripts")
 OUT_DIR.mkdir(exist_ok=True, parents=True)
 
@@ -24,8 +24,11 @@ with open(PROBLEMS_PATH) as f:
 
 video_links = [problem["video_link"] for problem in problems]
 
-# TODO remove
-video_links = video_links[:1]
-
-with YoutubeDL({"writeautomaticsub": True, "skip_download": True}) as ydl:
+with YoutubeDL(
+    {
+        "writeautomaticsub": True, 
+        "skip_download": True,
+        "outtmpl": f"{OUT_DIR}/%(id)s.%(ext)s"
+    }
+) as ydl:
     ydl.download(video_links)

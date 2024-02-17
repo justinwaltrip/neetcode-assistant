@@ -22,14 +22,6 @@ Use the install script to install the required dependencies.
 bash install.sh
 ```
 
-### Nix
-
-If you are using Nix, you can enter a shell with the required dependencies by running the following command:
-
-```bash
-nix-shell -p python3 awscli youtube-dl
-```
-
 ## Setup
 
 1. Configure the AWS CLI with the appropriate credentials.
@@ -40,5 +32,5 @@ aws configure
 
 ## Stages
 
-- **scrape** - Scrape NeetCode 150 problems from their website.
-- **download** - Transcripts for Youtube solutions to the problems.
+- **scrape** - NeetCode 150 problems from their website.
+- **download** - Subtitles for Youtube solutions to the problems.
