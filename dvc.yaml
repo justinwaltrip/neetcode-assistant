@@ -9,3 +9,9 @@ stages:
       - data/raw/problems.json
     outs:
       - data/raw/transcripts
+  convert:
+    cmd: python scripts/convert.py
+    deps:
+      - data/raw/transcripts
+    outs:
+      - data/processed/transcripts

@@ -34,3 +34,4 @@ aws configure
 
 - **scrape** - NeetCode 150 problems from their website.
 - **download** - Subtitles for Youtube solutions to the problems.
+- **convert** - WevVTT to plain text.

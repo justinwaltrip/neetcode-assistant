@@ -20,3 +20,17 @@ stages:
       md5: 8dbb2b420d0928fccaf4ad8496a7cd09.dir
       size: 18133314
       nfiles: 136
+  convert:
+    cmd: python scripts/convert.py
+    deps:
+    - path: data/raw/transcripts
+      hash: md5
+      md5: 8dbb2b420d0928fccaf4ad8496a7cd09.dir
+      size: 18133314
+      nfiles: 136
+    outs:
+    - path: data/processed/transcripts
+      hash: md5
+      md5: 06136de0282f439f9f65300c60182894.dir
+      size: 1821080
+      nfiles: 136
