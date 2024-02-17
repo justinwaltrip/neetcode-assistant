@@ -5,6 +5,7 @@ from selenium.webdriver.common.by import By
 from pathlib import Path
 import json
 from tqdm import tqdm
+from time import sleep
 
 BASE_URL = "https://neetcode.io/practice"
 DATA_PATH = Path("data/raw/problems.json")
@@ -26,20 +27,24 @@ list_view_button = driver.find_element(
 )
 list_view_button.click()
 
-# get problems table
-table = driver.find_element(
-    By.XPATH,
-    "/html/body/app-root/app-pattern-table-list/div/div[2]/div[6]/app-table/div/table",
-)
+# wait for page to load
+driver.implicitly_wait(5)
 
-# get all rows
-rows = table.find_elements(By.TAG_NAME, "tr")
+# get all tables
+tables = driver.find_elements(By.TAG_NAME, "table")
 
-problem_rows = rows[1:]
+problem_rows = []
+for table in tables:
+    # get all rows
+    problem_rows.extend(table.find_elements(By.TAG_NAME, "tr")[1:])
 
-problems = []
+if DATA_PATH.exists():
+    problems = json.loads(DATA_PATH.read_text())
+else:
+    problems = []
+
 for row in tqdm(problem_rows):
-    # get problem name 
+    # get problem name
     problem_col = row.find_element(By.TAG_NAME, "a")
     name = problem_col.text
 
@@ -61,10 +66,18 @@ for row in tqdm(problem_rows):
     # wait for page to load
     driver.implicitly_wait(5)
 
-    # get description
-    description = driver.find_element(
-        By.XPATH, "/html/body/div[1]/div[2]/div/div/div[4]/div/div/div[4]/div/div[1]/div[3]"
-    ).text
+    try:
+        description = driver.find_element(
+            By.XPATH,
+            "/html/body/div[1]/div[2]/div/div/div[4]/div/div/div[4]/div/div[1]/div[3]",
+        ).text
+    except Exception:
+        # just wait a little longer
+        sleep(3)
+        description = driver.find_element(
+            By.XPATH,
+            "/html/body/div[1]/div[2]/div/div/div[4]/div/div/div[4]/div/div[1]/div[3]",
+        ).text
 
     # go back to problems list
     driver.back()
@@ -75,7 +88,12 @@ for row in tqdm(problem_rows):
     # click on video solution
     video_solution_col = row.find_element(By.XPATH, "td[5]")
     button = video_solution_col.find_element(By.TAG_NAME, "button")
-    button.click()
+    try:
+        button.click()
+    except Exception:
+        # wait for human to manually close the solution modal
+        input("Press enter to continue...")
+        button.click()
 
     # get video solution link
     video_link = driver.find_element(
@@ -84,16 +102,28 @@ for row in tqdm(problem_rows):
     ).get_attribute("href")
 
     # close video solution modal
-    close_button = driver.find_element(
-        By.XPATH,
-        "/html/body/app-root/app-pattern-table-list/div/div[2]/div[6]/app-table/app-modal[2]/div/div[2]/footer/button",
-    )
-    close_button.click()
+    for i in range(2, 20):
+        try:
+            close_button = driver.find_element(
+                By.XPATH,
+                f"/html/body/app-root/app-pattern-table-list/div/div[2]/div[6]/app-table[{i}]/app-modal[2]/div/div[2]/footer/button",
+            )
+            if not close_button.is_displayed():
+                continue
+            close_button.click()
+            break
+        except Exception:
+            pass
 
     # click on code solution
     code_solution_col = row.find_element(By.XPATH, "td[6]")
     button = code_solution_col.find_element(By.TAG_NAME, "button")
-    button.click()
+    try:
+        button.click()
+    except Exception:
+        # wait for human to manually close the video solution modal
+        input("Press enter to continue...")
+        button.click()
 
     # get solution
     solution = driver.find_element(
@@ -102,11 +132,18 @@ for row in tqdm(problem_rows):
     ).text
 
     # close code solution modal
-    close_button = driver.find_element(
-        By.XPATH,
-        "/html/body/app-root/app-pattern-table-list/div/div[2]/div[6]/app-table[1]/app-modal[1]/div/div[2]/footer/button",
-    )
-    close_button.click()
+    for i in range(2, 20):
+        try:
+            close_button = driver.find_element(
+                By.XPATH,
+                f"/html/body/app-root/app-pattern-table-list/div/div[2]/div[6]/app-table[{i}]/app-modal[1]/div/div[2]/footer/button",
+            )
+            if not close_button.is_displayed():
+                continue
+            close_button.click()
+            break
+        except Exception:
+            pass
 
     problems.append(
         {

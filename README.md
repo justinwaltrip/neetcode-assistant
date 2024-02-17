@@ -19,3 +19,11 @@ Use the install script to install the required dependencies.
 ```bash
 bash install.sh
 ```
+
+## Setup
+
+1. Configure the AWS CLI with the appropriate credentials.
+
+```bash
+aws configure
+```

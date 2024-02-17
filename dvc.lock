@@ -1,0 +1,9 @@
+schema: '2.0'
+stages:
+  scrape:
+    cmd: python scripts/scrape.py
+    outs:
+    - path: data/raw/problems.json
+      hash: md5
+      md5: 7d78044b2c27b2618c56d650eacee7c7
+      size: 259688
