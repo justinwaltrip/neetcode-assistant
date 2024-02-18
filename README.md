@@ -12,22 +12,12 @@ The project is structured as follows:
 ## Installation
 
 Pre-conditions:
-- Python 3.11 or later with pip and virtualenv installed.
-- AWS CLI installed and configured.
-- youtube-dl installed.
+- [Nix package manager](https://nixos.org/download) is installed.
 
-Use the install script to install the required dependencies.
+To enter the development environment, run the following command:
 
 ```bash
-bash install.sh
-```
-
-## Setup
-
-1. Configure the AWS CLI with the appropriate credentials.
-
-```bash
-aws configure
+nix-shell
 ```
 
 ## Stages
