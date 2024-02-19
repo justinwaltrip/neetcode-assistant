@@ -9,15 +9,14 @@ The project is structured as follows:
 - `scripts`: Contains the scripts corresponding to stages of the data ingestion process.
 - `data`: Contains the data used in the project.
 
-## Installation
+## Getting Started
 
-Pre-conditions:
-- [Nix package manager](https://nixos.org/download) is installed.
+We use [nix](https://nixos.org/) to make our development environment reproducible. Specifically, we can use the [devenv](https://devenv.sh/) wrapper to automatically create a development environment with all the necessary dependencies. If you don't have devenv installed, follow the instructions [here](https://devenv.sh/getting-started/).
 
-To enter the development environment, run the following command:
+To enter the development environment,
 
 ```bash
-nix-shell
+devenv shell
 ```
 
 ## Stages
