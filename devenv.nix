@@ -12,4 +12,5 @@
   pre-commit.hooks = {
     black.enable = true;
   };
+  enterShell = "pip install --upgrade pip";
 }
