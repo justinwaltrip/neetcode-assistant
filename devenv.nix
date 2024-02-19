@@ -1,8 +1,11 @@
 { pkgs, ... }:
 
 {
-  packages = [
-    pkgs.awscli2
+  packages = with pkgs; [
+    awscli2
+    docker
+    nvidia-docker
+    docker-compose
   ];
   languages.python = {
     enable = true;
