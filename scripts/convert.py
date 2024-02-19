@@ -3,7 +3,7 @@
 Inspired by https://stackoverflow.com/a/52223298
 """
 
-from pathlib import Path 
+from pathlib import Path
 
 import webvtt
 from tqdm import tqdm

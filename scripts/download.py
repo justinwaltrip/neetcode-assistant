@@ -26,9 +26,9 @@ video_links = [problem["video_link"] for problem in problems]
 
 with YoutubeDL(
     {
-        "writeautomaticsub": True, 
+        "writeautomaticsub": True,
         "skip_download": True,
-        "outtmpl": f"{OUT_DIR}/%(id)s.%(ext)s"
+        "outtmpl": f"{OUT_DIR}/%(id)s.%(ext)s",
     }
 ) as ydl:
     ydl.download(video_links)

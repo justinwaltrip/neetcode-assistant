@@ -9,4 +9,7 @@
     venv.enable = true;
     venv.requirements = ./requirements.txt;
   };
+  pre-commit.hooks = {
+    black.enable = true;
+  };
 }
