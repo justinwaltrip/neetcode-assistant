@@ -19,6 +19,8 @@ After you hook into your shell, you will need to run the command `direnv allow` 
 
 ## Setup
 
+### Ollama
+
 To start Ollama,
 
 ```bash
@@ -33,6 +35,19 @@ docker exec -it neetcode-assistant-ollama-1 ollama run mixtral:8x7b-instruct-v0.
 
 *Note: This model takes ~32 GB of disk space and requires ~35 GB of RAM to run.*
 
+### Milvus
+
+To start Milvus,
+
+```bash
+wget https://raw.githubusercontent.com/milvus-io/milvus/master/scripts/standalone_embed.sh
+bash standalone_embed.sh start
+rm standalone_embed.sh embedEtcd.yaml
+```
+
+## Ingestion Pipeline
+
 - **scrape** - NeetCode 150 problems from their website.
-- **download** - Subtitles for Youtube solutions to the problems.
-- **convert** - WevVTT to plain text.
+- **download** - subtitles for Youtube solutions to the problems.
+- **convert** - WevVTT transcripts to plain text.
+- **index** - text for retrieval.

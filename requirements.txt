@@ -4,3 +4,5 @@ tqdm==4.66.1
 dvc_s3==3.0.1
 yt-dlp==2023.12.30
 webvtt-py==0.4.6
+langchain==0.1.7
+pymilvus==2.3.6
