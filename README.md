@@ -13,11 +13,9 @@ The project is structured as follows:
 
 We use [nix](https://nixos.org/) to make our development environment reproducible. Specifically, we can use the [devenv](https://devenv.sh/) wrapper to automatically create a development environment with all the necessary dependencies. If you don't have devenv installed, follow the instructions [here](https://devenv.sh/getting-started/).
 
-To enter the development environment,
+To make it easier to switch between development environments, we can use a separate tool called [direnv](https://direnv.net/). If you don't have direnv installed, follow the instructions [here](https://direnv.net/docs/installation.html). 
 
-```bash
-devenv shell
-```
+After you hook into your shell, you will need to run the command `direnv allow` to allow the `.envrc` file to be loaded into your shell. It will now be automatically loaded and unloaded when you enter and exit the directory.
 
 ## Stages
 
