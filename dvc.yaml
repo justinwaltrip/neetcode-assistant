@@ -15,3 +15,10 @@ stages:
       - data/raw/transcripts
     outs:
       - data/processed/transcripts
+  index:
+    cmd: python scripts/index.py
+    deps:
+      - data/raw/problems.json
+      - data/processed/transcripts
+    outs:
+      - data/processed/index.json

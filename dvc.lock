@@ -34,3 +34,20 @@ stages:
       md5: 06136de0282f439f9f65300c60182894.dir
       size: 1821080
       nfiles: 136
+  index:
+    cmd: python scripts/index.py
+    deps:
+    - path: data/processed/transcripts
+      hash: md5
+      md5: 06136de0282f439f9f65300c60182894.dir
+      size: 1821080
+      nfiles: 136
+    - path: data/raw/problems.json
+      hash: md5
+      md5: eafce5e82fe2f3adc583aeec95041572
+      size: 247380
+    outs:
+    - path: data/processed/index.json
+      hash: md5
+      md5: 1d27bd993f77e15b094affb2d6c28244
+      size: 250858

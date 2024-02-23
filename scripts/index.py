@@ -18,6 +18,7 @@ PROBLEMS_PATH = "data/raw/problems.json"
 TRANSCRIPTS_DIR = "data/processed/transcripts"
 MODEL = "mixtral:8x7b-instruct-v0.1-q5_K_M"
 COLLECTION_NAME = "transcripts"
+INDEX_PATH = "data/processed/index.json"
 
 with open(PROBLEMS_PATH, "r") as f:
     problems = json.load(f)
@@ -46,9 +47,12 @@ record_manager = SQLRecordManager(
 )
 record_manager.create_schema()
 
+# uncomment to clear content. See the `full` mode section to to understand why it works.
+# index([], record_manager, vector_db, cleanup="full", source_id_key="source")
+
+# get transcripts
 transcripts = []
 metadatas = []
-
 for problem in problems:
     try:
         video_link = problem["video_link"]
@@ -56,8 +60,10 @@ for problem in problems:
         transcript_path = f"{TRANSCRIPTS_DIR}/{id}.en.txt"
         transcripts.append(open(transcript_path, "r").read())
         metadatas.append({"source": problem["name"]})
+        problem["indexed"] = True
     except Exception as e:
         print(f"Error processing {problem['name']}: {e}")
+        problem["indexed"] = False
 
 # split transcript into chunks
 documents = text_splitter.create_documents(
@@ -65,9 +71,11 @@ documents = text_splitter.create_documents(
     metadatas=metadatas,
 )
 
-# get batches of 100 documents
-batches = [documents[i : i + 100] for i in range(0, len(documents), 100)]
+# get batches with size of ~1% of total
+batch_size = len(documents) // 100
+batches = [documents[i : i + batch_size] for i in range(0, len(documents), batch_size)]
 
+# index chunks (with progress bar)
 for batch in tqdm(batches):
     # index chunks
     index(
@@ -77,3 +85,7 @@ for batch in tqdm(batches):
         cleanup="full",
         source_id_key="source",
     )
+
+# save problems with indexed flag
+with open(INDEX_PATH, "w") as f:
+    json.dump(problems, f, indent=4)
