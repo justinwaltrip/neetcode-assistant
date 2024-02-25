@@ -13,8 +13,8 @@
     venv.requirements = ./requirements.txt;
   };
   pre-commit.hooks = {
-    black.enable = true;
+    ruff.enable = true;
   };
   enterShell = "pip install --upgrade pip";
-  env.LD_LIBRARY_PATH = "${pkgs.stdenv.cc.cc.lib}/lib/";  # required pymilvus to import cleanly
+  env.LD_LIBRARY_PATH = "${pkgs.stdenv.cc.cc.lib}/lib/";  # required for python packages to import cleanly
 }
