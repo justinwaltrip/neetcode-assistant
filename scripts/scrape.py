@@ -1,11 +1,12 @@
 """Scrape problems from NeetCode website."""
 
+import json
+from pathlib import Path
+from time import sleep
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from pathlib import Path
-import json
 from tqdm import tqdm
-from time import sleep
 
 BASE_URL = "https://neetcode.io/practice"
 DATA_PATH = Path("data/raw/problems.json")

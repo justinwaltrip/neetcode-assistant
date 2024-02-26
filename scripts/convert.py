@@ -8,7 +8,6 @@ from pathlib import Path
 import webvtt
 from tqdm import tqdm
 
-
 IN_DIR = "data/raw/transcripts"
 OUT_DIR = Path("data/processed/transcripts")
 OUT_DIR.mkdir(exist_ok=True, parents=True)

@@ -15,3 +15,6 @@ volumes
 
 # langchain
 record_manager_cache.sql
+
+# ollama
+ollama

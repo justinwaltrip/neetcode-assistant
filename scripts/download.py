@@ -12,7 +12,6 @@ from pathlib import Path
 
 from yt_dlp import YoutubeDL
 
-
 PROBLEMS_PATH = "data/raw/problems.json"
 OUT_DIR = Path("data/raw/transcripts")
 OUT_DIR.mkdir(exist_ok=True, parents=True)
