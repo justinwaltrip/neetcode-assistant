@@ -7,18 +7,22 @@
 2. Embed chunks for semantic search.
 3. Load chunks into vector database.
 """
+
 import json
+import os
+import sys
 
 from langchain.indexes import SQLRecordManager, index
 from langchain.text_splitter import CharacterTextSplitter
-from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.vectorstores import Milvus
-from slugify import slugify
 from tqdm import tqdm
+
+sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
+
+from utils import get_collection_name, get_embeddings
 
 PROBLEMS_PATH = "data/raw/problems.json"
 TRANSCRIPTS_DIR = "data/processed/transcripts"
-MODEL = "mixtral:8x7b-instruct-v0.1-q5_K_M"
 INDEX_PATH = "data/processed/index.json"
 
 with open(PROBLEMS_PATH, "r") as f:
@@ -32,8 +36,7 @@ text_splitter = CharacterTextSplitter(
     is_separator_regex=False,
 )
 
-# get embeddings from Ollama
-embeddings = OllamaEmbeddings(model=MODEL)
+embeddings = get_embeddings()
 
 for problem in tqdm(problems):
     try:
@@ -43,10 +46,22 @@ for problem in tqdm(problems):
         transcript = open(transcript_path, "r").read()
         problem_name = problem["name"]
 
+        # get collection name from problem name
+        collection_name = get_collection_name(problem_name)
+
+        # uncomment to delete previous collection
+        # import pymilvus
+
+        # client = pymilvus.Milvus()
+        # try:
+        #     client.drop_collection(collection_name)
+        # except Exception:
+        #     pass
+
         # connect to vector database
         vector_db = Milvus(
             embeddings,
-            collection_name=slugify(problem_name, separator="_"),
+            collection_name=collection_name,
         )
 
         # initialize record manager

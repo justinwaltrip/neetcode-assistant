@@ -19,19 +19,28 @@ After you hook into your shell, you will need to run the command `direnv allow` 
 
 ## Setup
 
-To start containers,
+1. To start containers,
 
 ```bash
 docker compose up -d
 ```
 
-Once containers are running, you can run the following command to download a 5-bit quant of the Mistral 8x7B MOE instruct model,
+2. Once containers are running, you can run the following command to download a 5-bit quant of the Mistral 8x7B MOE instruct model,
 
 ```bash
 docker exec -it neetcode-assistant-ollama-1 ollama run mixtral:8x7b-instruct-v0.1-q5_K_M
 ```
 
 *Note: This model takes ~32 GB of disk space and requires ~35 GB of RAM to run.*
+
+3. You can also run the following command to download and test the BAAI/bge-large-en-v1.5 model,
+
+```bash
+curl http://localhost:8080/embeddings -X POST -H "Content-Type: application/json" -d '{
+  "input": "Your text string goes here",
+  "model": "text-embedding-ada-002"
+}' | jq "."
+```
 
 ## Ingestion Pipeline
 

@@ -1,6 +1,8 @@
+# python
 .venv
+**/__pycache__/
 
-# Devenv
+# devenv
 .devenv*
 devenv.local.nix
 
@@ -10,7 +12,7 @@ devenv.local.nix
 # pre-commit
 .pre-commit-config.yaml
 
-# Milvus
+# milvus
 volumes
 
 # langchain

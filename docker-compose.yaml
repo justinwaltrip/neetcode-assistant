@@ -1,4 +1,5 @@
 services:
+  # ollama (llm inference)
   ollama:
     image: ollama/ollama
     ports:
@@ -13,7 +14,7 @@ services:
     volumes:
       - ./ollama:/root/.ollama
 
-  # milvus standalone
+  # milvus standalone (vector database)
   etcd:
     container_name: milvus-etcd
     image: quay.io/coreos/etcd:v3.5.5
@@ -76,6 +77,28 @@ services:
     depends_on:
       - "etcd"
       - "minio"
+
+  # localai (embeddings)
+  localai:
+    image: quay.io/go-skynet/local-ai:master-cublas-cuda12
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    environment:
+      - MODELS_PATH=/models
+    volumes:
+      - ./models:/models:cached
+      - ./images/:/tmp/generated/images/
+    command: ["/usr/bin/local-ai"]
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
 
 networks:
   default:

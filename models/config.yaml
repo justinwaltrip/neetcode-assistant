@@ -1,0 +1,7 @@
+name: text-embedding-ada-002
+backend: sentencetransformers
+embeddings: true
+parameters:
+  model: BAAI/bge-large-en-v1.5
+
+f16: true  # enable with GPU acceleration

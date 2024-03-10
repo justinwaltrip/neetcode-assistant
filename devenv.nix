@@ -17,4 +17,5 @@
   };
   enterShell = "pip install --upgrade pip";
   env.LD_LIBRARY_PATH = "${pkgs.stdenv.cc.cc.lib}/lib/";  # required for python packages to import cleanly
+  env.OPENAI_API_KEY = "fake-key";
 }
