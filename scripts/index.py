@@ -71,6 +71,9 @@ for problem in tqdm(problems):
         )
         record_manager.create_schema()
 
+        # uncomment to delete previous records
+        # record_manager.delete_keys(record_manager.list_keys())
+
         # split transcript into chunks
         metadata = {"source": problem_name}
         documents = text_splitter.create_documents(
