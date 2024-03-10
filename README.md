@@ -48,3 +48,25 @@ curl http://localhost:8080/embeddings -X POST -H "Content-Type: application/json
 - **download** - subtitles for Youtube solutions to the problems.
 - **convert** - WevVTT transcripts to plain text.
 - **index** - text for retrieval.
+
+You can run the ingestion pipeline by running the following command:
+
+```bash
+dvc repro
+```
+
+## API
+
+To start the API, run the following command:
+
+```bash
+uvicorn api.app:app
+```
+
+We use [Bruno](https://docs.usebruno.com/) to store and manage our API requests.
+
+To use the Bruno GUI, run the following command:
+
+```bash
+bruno
+```

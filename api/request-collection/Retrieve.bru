@@ -1,0 +1,18 @@
+meta {
+  name: Retrieve
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://127.0.0.1:8000/retrieve
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "problem_name": "Valid Anagram",
+    "query": "what is an anagram?"
+  }
+}

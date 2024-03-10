@@ -6,6 +6,7 @@
     docker
     nvidia-docker
     docker-compose
+    bruno
   ];
   languages.python = {
     enable = true;

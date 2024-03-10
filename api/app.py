@@ -21,7 +21,7 @@ app = FastAPI()
 
 
 @app.get("/")
-def read_root():
+def get_root():
     """Return API status.
 
     Returns:
@@ -36,7 +36,7 @@ class RetrieveRequest(BaseModel):
 
 
 @app.post("/retrieve")
-def retrieve(body: RetrieveRequest):
+def post_retrieve(body: RetrieveRequest):
     """Retrieve relevant documents for a given query."""
     # get problem (if exists)
     try:
