@@ -2,55 +2,16 @@
 
 Inspired by https://github.com/langchain-ai/langsmith-cookbook/blob/main/feedback-examples/streamlit/README.md
 """
-import streamlit as st
-from expression_chain import get_expression_chain
-from langchain import memory as lc_memory
-from langchain.callbacks.manager import collect_runs
-from langsmith import Client
-from streamlit_feedback import streamlit_feedback
 
-client = Client()
+import streamlit as st
+from streamlit_feedback import streamlit_feedback
 
 st.set_page_config(
     page_title="Capturing User Feedback",
     page_icon="🦜️️🛠️",
 )
 
-st.subheader("🦜🛠️ Chatbot with Feedback in LangSmith")
-
-st.sidebar.info(
-    """
-         
-An example of a Streamlit Chat UI capturing user feedback.
-
-- [LangSmith Documentation](https://docs.smith.langchain.com/)
-- Streamlit's [chat elements Documentation](https://docs.streamlit.io/library/api-reference/chat)
-- Trubrics' [Streamlit-Feedback](https://github.com/trubrics/streamlit-feedback) component
-         
-"""
-)
-
-# Add a button to choose between llmchain and expression chain
-_DEFAULT_SYSTEM_PROMPT = (
-    "You are a funky parrot pal. You are not an AI. You are a parrot."
-    " You love poetry, reading, funk music, and friendship!"
-)
-system_prompt = st.sidebar.text_area(
-    "Custom Instructions",
-    _DEFAULT_SYSTEM_PROMPT,
-    help="Custom instructions to provide the language model to determine "
-    "style, personality, etc.",
-)
-system_prompt = system_prompt.strip().replace("{", "{{").replace("}", "}}")
-
-memory = lc_memory.ConversationBufferMemory(
-    chat_memory=lc_memory.StreamlitChatMessageHistory(key="langchain_messages"),
-    return_messages=True,
-    memory_key="chat_history",
-)
-
-# Create Chain
-chain = get_expression_chain(system_prompt, memory)
+st.subheader("🦜🛠️ Chatbot with Feedback")
 
 st.sidebar.markdown("## Feedback Scale")
 feedback_option = (
@@ -59,7 +20,7 @@ feedback_option = (
 
 if st.sidebar.button("Clear message history"):
     print("Clearing message history")
-    memory.clear()
+    # TODO clear message history
 
 for msg in st.session_state.langchain_messages:
     avatar = "🦜" if msg.type == "ai" else None
@@ -71,16 +32,20 @@ if prompt := st.chat_input(placeholder="Ask me a question!"):
     st.chat_message("user").write(prompt)
     with st.chat_message("assistant", avatar="🦜"):
         message_placeholder = st.empty()
-        full_response = ""
-        # Define the basic input structure for the chains
-        input_dict = {"input": prompt}
 
-        with collect_runs() as cb:
-            for chunk in chain.stream(input_dict, config={"tags": ["Streamlit Chat"]}):
-                full_response += chunk.content
-                message_placeholder.markdown(full_response + "▌")
-            memory.save_context(input_dict, {"output": full_response})
-            st.session_state.run_id = cb.traced_runs[0].id
+        # TODO call model
+        # url = "http://127.0.0.1:8000/chat"
+
+        # payload = {
+        #     "problem_name": "Valid Anagram",
+        #     "query": "What is an anagram?"
+        # }
+
+        # response = requests.post(url, json=payload)
+
+        # print(response.json())
+        full_response = None
+
         message_placeholder.markdown(full_response)
 
 if st.session_state.get("run_id"):
@@ -105,21 +70,24 @@ if st.session_state.get("run_id"):
         score = scores.get(feedback["score"])
 
         if score is not None:
-            # Formulate feedback type string incorporating the feedback option
-            # and score value
-            feedback_type_str = f"{feedback_option} {feedback['score']}"
+            # # Formulate feedback type string incorporating the feedback option
+            # # and score value
+            # feedback_type_str = f"{feedback_option} {feedback['score']}"
 
-            # Record the feedback with the formulated feedback type string
-            # and optional comment
-            feedback_record = client.create_feedback(
-                run_id,
-                feedback_type_str,
-                score=score,
-                comment=feedback.get("text"),
-            )
-            st.session_state.feedback = {
-                "feedback_id": str(feedback_record.id),
-                "score": score,
-            }
+            # # Record the feedback with the formulated feedback type string
+            # # and optional comment
+            # feedback_record = client.create_feedback(
+            #     run_id,
+            #     feedback_type_str,
+            #     score=score,
+            #     comment=feedback.get("text"),
+            # )
+            # st.session_state.feedback = {
+            #     "feedback_id": str(feedback_record.id),
+            #     "score": score,
+            # }
+
+            # TODO record feedback
+            pass
         else:
             st.warning("Invalid feedback score.")

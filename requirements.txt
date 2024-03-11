@@ -10,3 +10,5 @@ fastapi==0.110.0
 uvicorn[standard]==0.27.1
 python-slugify==8.0.4
 openai==0.28.1
+streamlit==1.32.0
+streamlit-feedback==0.1.3
